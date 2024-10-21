@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCADA CO2 Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .dashboard {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .value {
+            font-size: 48px;
+            margin: 20px 0;
+        }
+        .unit {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <h1>CO2 Emission Monitor</h1>
+    <div class="value" id="co2-value">0</div>
+    <div class="unit">ppm</div>
+</div>
+
+<script>
+    // Simulate CO2 emissions sensor data
+    function generateCO2Data() {
+        // Generate a random value between 300 and 600 ppm (normal CO2 levels)
+        return (Math.random() * (600 - 300) + 300).toFixed(2);
+    }
+
+    // Update CO2 value on the dashboard
+    function updateCO2Value() {
+        const co2ValueElement = document.getElementById('co2-value');
+        const newValue = generateCO2Data();
+        co2ValueElement.textContent = newValue;
+    }
+
+    // Update the CO2 value every 2 seconds
+    setInterval(updateCO2Value, 2000);
+</script>
+
+</body>
+</html>
