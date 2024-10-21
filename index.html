@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -19,6 +20,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            margin-bottom: 20px;
         }
         .value {
             font-size: 48px;
@@ -28,30 +30,82 @@
             font-size: 24px;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
+<!-- CO2 Emission Monitor -->
 <div class="dashboard">
     <h1>CO2 Emission Monitor</h1>
     <div class="value" id="co2-value">0</div>
     <div class="unit">ppm</div>
 </div>
 
+<!-- Canvas for the chart -->
+<canvas id="co2Chart" width="400" height="200"></canvas>
+
 <script>
-    // Simulate CO2 emissions sensor data
+    // Variables to store CO2 data
+    const co2Data = [];
+    const co2Timestamps = [];
+    const maxDataPoints = 20; // Limit to 20 data points on the chart
+
+    // Function to generate random CO2 data
     function generateCO2Data() {
-        // Generate a random value between 300 and 600 ppm (normal CO2 levels)
         return (Math.random() * (600 - 300) + 300).toFixed(2);
     }
 
-    // Update CO2 value on the dashboard
+    // Function to update the CO2 value and the chart
     function updateCO2Value() {
         const co2ValueElement = document.getElementById('co2-value');
         const newValue = generateCO2Data();
         co2ValueElement.textContent = newValue;
+
+        // Add new data to the chart
+        const now = new Date().toLocaleTimeString();
+        co2Data.push(newValue);
+        co2Timestamps.push(now);
+
+        if (co2Data.length > maxDataPoints) {
+            co2Data.shift(); // Remove oldest data point
+            co2Timestamps.shift();
+        }
+
+        // Update the chart with the new data
+        co2Chart.update();
     }
 
-    // Update the CO2 value every 2 seconds
+    // Chart.js configuration for CO2 emissions chart
+    const ctx = document.getElementById('co2Chart').getContext('2d');
+    const co2Chart = new Chart(ctx, {
+        type: 'line', // Line chart type
+        data: {
+            labels: co2Timestamps, // Timestamps for x-axis
+            datasets: [{
+                label: 'CO2 Emission (ppm)',
+                data: co2Data,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 1,
+                fill: true,
+                tension: 0.4 // Adds some curve to the line
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: false, // CO2 levels will not go below zero
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: true, // Show hover values
+                }
+            }
+        }
+    });
+
+    // Update the CO2 value and the chart every 2 seconds
     setInterval(updateCO2Value, 2000);
 </script>
 
