@@ -11,8 +11,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: space-between;
+            height: 100vh; /* Full viewport height */
+            margin: 0;
+            padding: 0;
         }
         .dashboard {
             background-color: white;
@@ -20,7 +22,9 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            width: 90vw; /* 90% of the viewport width */
+            max-width: 600px; /* Maximum width to prevent it from getting too large */
         }
         .value {
             font-size: 48px;
@@ -28,6 +32,11 @@
         }
         .unit {
             font-size: 24px;
+        }
+        canvas {
+            width: 90vw; /* Ensure the chart is responsive */
+            max-width: 1200px; /* Limit maximum width */
+            height: 50vh; /* Set height relative to viewport */
         }
     </style>
     <!-- Include Chart.js -->
@@ -43,7 +52,7 @@
 </div>
 
 <!-- Canvas for the chart -->
-<canvas id="co2Chart" width="400" height="200"></canvas>
+<canvas id="co2Chart"></canvas>
 
 <script>
     // Predefined dummy data for CO2 readings
@@ -96,6 +105,7 @@
             }]
         },
         options: {
+            maintainAspectRatio: false, // Make chart responsive to the container
             scales: {
                 y: {
                     beginAtZero: false, // CO2 levels will not go below zero
