@@ -87,7 +87,7 @@
             labels: co2Timestamps, // Timestamps for x-axis
             datasets: [{
                 label: 'CO2 Emission (ppm)',
-                data: co2Data,
+                data: co2Data, // Use the predefined data
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderWidth: 1,
@@ -109,8 +109,8 @@
         }
     });
 
-    // Update the CO2 value and the chart every 2 seconds
-    setInterval(updateCO2Value, 2000);
+    // Update the CO2 value and the chart every 5 seconds (5000 ms)
+    setInterval(updateCO2Value, 5000);
 </script>
 
 </body>
